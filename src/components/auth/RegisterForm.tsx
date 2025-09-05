@@ -5,6 +5,7 @@
 // Contains interactive sign-up logic separate from server-rendered wrapper page.
 
 import { FormEvent, useState } from "react";
+import { FcGoogle } from "react-icons/fc"; // Google icon
 import Link from "next/link";
 
 interface FormState {
@@ -19,6 +20,16 @@ export function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  // (AUTH_SOCIAL_GOOGLE) Replace with real signIn('google') when NextAuth or custom OAuth is configured.
+  const handleGoogle = async () => {
+    try {
+      console.log("GOOGLE_REGISTER_CLICKED");
+      // await signIn('google', { callbackUrl: '/dashboard' });
+    } catch {
+      setError("Google signup failed (mock)");
+    }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -124,6 +135,17 @@ export function RegisterForm() {
 
       <button type="submit" className="btn btn-primary w-full" disabled={loading}>
         {loading ? <span className="loading loading-spinner loading-sm" /> : "Create account"}
+      </button>
+
+      <div className="divider text-xs uppercase">or</div>
+      <button
+        type="button"
+        onClick={handleGoogle}
+        className="btn btn-outline w-full gap-2"
+        aria-label="Continue with Google"
+      >
+        <FcGoogle size={18} />
+        Continue with Google
       </button>
 
       <div className="mt-6 text-center text-sm">
