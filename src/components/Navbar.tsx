@@ -41,15 +41,66 @@ const linkBaseClasses =
 const inactiveClasses = "text-base-content/70 hover:text-base-content hover:bg-base-200";
 const activeClasses = "text-primary bg-primary/10 hover:bg-primary/20";
 
-// Placeholder auth check (AUTH_HOOK) — replace with real logic later.
-function useAuthMock() {
-	// Return shape you expect from real auth hook for minimal refactor later.
-	return { isAuthenticated: false, user: null } as const;
+// (AUTH_HOOK) Lightweight session fetcher for NextAuth without adding client dependency.
+// Avoids editing other files (package.json) per request. If you later install next-auth
+// client package, you can replace this with `useSession()` from "next-auth/react".
+function useSessionLite() {
+	const [state, setState] = useState<{
+		loading: boolean;
+		user: { name?: string | null; email?: string | null; image?: string | null } | null;
+	}>({ loading: true, user: null });
+
+	useEffect(() => {
+		let cancelled = false;
+		(async () => {
+			try {
+				const res = await fetch("/api/auth/session", { cache: "no-store" });
+				if (!res.ok) throw new Error("session request failed");
+				const data = await res.json();
+				if (!cancelled) {
+					setState({ loading: false, user: data?.user ?? null });
+				}
+			} catch {
+				if (!cancelled) setState({ loading: false, user: null });
+			}
+		})();
+		return () => {
+			cancelled = true;
+		};
+	}, []);
+
+	return {
+		loading: state.loading,
+		isAuthenticated: !!state.user,
+		user: state.user,
+	};
 }
 
 const Navbar = () => {
 	const pathname = usePathname();
-	const auth = useAuthMock(); // (AUTH_HOOK) swap with actual auth.
+	const auth = useSessionLite(); // (AUTH_HOOK) Replace with useSession() when next-auth client added.
+
+	// Sign-out logic using NextAuth endpoints manually (POST with CSRF flow simplified).
+	const [signingOut, setSigningOut] = useState(false);
+	const handleSignOut = useCallback(async () => {
+		try {
+			setSigningOut(true);
+			// Get CSRF token
+			const csrfRes = await fetch("/api/auth/csrf", { cache: "no-store" });
+			const csrfData = await csrfRes.json();
+			const form = new URLSearchParams();
+			form.set("csrfToken", csrfData.csrfToken);
+			await fetch("/api/auth/signout", {
+				method: "POST",
+				headers: { "Content-Type": "application/x-www-form-urlencoded" },
+				body: form.toString(),
+			});
+			// Refresh to reflect logged-out UI.
+			window.location.href = "/";
+		} catch {
+			setSigningOut(false);
+		}
+	}, []);
 
 	// (STATE) Mobile menu open/closed.
 	const [open, setOpen] = useState(false);
@@ -134,10 +185,10 @@ const Navbar = () => {
 				{/* RIGHT: Auth / Actions (desktop) */}
 				<div className="hidden md:flex items-center gap-3">
 					{/* (THEME_TOGGLE) Optionally place <ThemeToggleButton /> here later. */}
-					{auth.isAuthenticated ? (
-						<Link href="/dashboard" className="btn btn-sm md:btn-md btn-outline">
-							Dashboard
-						</Link>
+					{auth.loading ? (
+						<span className="loading loading-spinner loading-sm" aria-label="Loading session" />
+					) : auth.isAuthenticated && auth.user ? (
+						<AvatarDropdown user={auth.user} onSignOut={handleSignOut} signingOut={signingOut} />
 					) : (
 						<Link href="/login" className="btn btn-sm md:btn-md btn-primary">
 							Login
@@ -146,18 +197,16 @@ const Navbar = () => {
 				</div>
 
 				{/* MOBILE: Auth button stays visible on right if we want both icon + login (optional). */}
-				{!auth.isAuthenticated && (
+				{!auth.loading && !auth.isAuthenticated && (
 					<div className="md:hidden ml-2">
 						<Link href="/login" className="btn btn-xs sm:btn-sm btn-primary">
 							Login
 						</Link>
 					</div>
 				)}
-				{auth.isAuthenticated && (
+				{!auth.loading && auth.isAuthenticated && auth.user && (
 					<div className="md:hidden ml-2">
-						<Link href="/dashboard" className="btn btn-xs sm:btn-sm btn-outline">
-							Dash
-						</Link>
+						<AvatarDropdown mobile user={auth.user} onSignOut={handleSignOut} signingOut={signingOut} />
 					</div>
 				)}
 			</div>
@@ -194,4 +243,114 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+// AvatarDropdown (inline component)
+// ---------------------------------
+// Provides an accessible dropdown for user actions without altering other files.
+// On mobile, renders a simplified horizontal layout instead of floating menu.
+interface AvatarDropdownProps {
+	user: { name?: string | null; email?: string | null; image?: string | null };
+	onSignOut: () => void;
+	signingOut: boolean;
+	mobile?: boolean;
+}
+
+const AvatarDropdown = ({ user, onSignOut, signingOut, mobile }: AvatarDropdownProps) => {
+	const [open, setOpen] = useState(false);
+	const toggle = useCallback(() => setOpen((o) => !o), []);
+	const initial = (user.name || user.email || "?").charAt(0).toUpperCase();
+
+	if (mobile) {
+		return (
+			<div className="flex items-center gap-2">
+				<button
+					onClick={() => (window.location.href = "/dashboard")}
+					className="flex items-center"
+					aria-label="Go to dashboard"
+				>
+					{user.image ? (
+						<Image
+							src={user.image}
+							alt={user.name || "User avatar"}
+							width={30}
+							height={30}
+							className="rounded-full border border-base-300"
+						/>
+					) : (
+						<span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-primary text-sm font-medium border border-base-300">
+							{initial}
+						</span>
+					)}
+				</button>
+				<button
+					onClick={onSignOut}
+					className="btn btn-xs sm:btn-sm btn-outline"
+					disabled={signingOut}
+				>
+					{signingOut ? <span className="loading loading-spinner loading-xs" /> : "Logout"}
+				</button>
+			</div>
+		);
+	}
+
+	return (
+		<div className="relative">
+			<button
+				onClick={toggle}
+				className="flex items-center gap-2 focus:outline-none"
+				aria-haspopup="menu"
+				aria-expanded={open}
+			>
+				{user.image ? (
+					<Image
+						src={user.image}
+						alt={user.name || "User avatar"}
+						width={36}
+						height={36}
+						className="rounded-full border border-base-300"
+					/>
+				) : (
+					<span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/15 text-primary font-medium border border-base-300">
+						{initial}
+					</span>
+				)}
+			</button>
+			{open && (
+				<div
+					role="menu"
+					className="absolute right-0 mt-2 w-52 rounded-md border border-base-300 bg-base-100 shadow-lg p-2 z-50"
+				>
+					<div className="px-2 py-2 text-xs text-base-content/60">
+						<span className="block font-medium text-base-content/80 truncate">
+							{user.name || user.email}
+						</span>
+						{user.email && user.name && (
+							<span className="block truncate">{user.email}</span>
+						)}
+					</div>
+					<ul className="menu menu-sm">
+						<li>
+							<button onClick={() => (window.location.href = "/dashboard")}>Dashboard</button>
+						</li>
+						<li>
+							<button onClick={() => (window.location.href = "/dashboard/profile")}>Profile</button>
+						</li>
+						<li>
+							<button onClick={() => (window.location.href = "/dashboard/settings")}>Settings</button>
+						</li>
+						<li className="pt-1 mt-1 border-t border-base-300">
+							<button onClick={onSignOut} disabled={signingOut} className="text-error">
+								{signingOut ? (
+									<span className="loading loading-spinner loading-xs" />
+								) : (
+									"Logout"
+								)}
+							</button>
+						</li>
+					</ul>
+				</div>
+			)}
+		</div>
+	);
+};
 
