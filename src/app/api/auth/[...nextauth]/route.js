@@ -34,6 +34,15 @@ export const authOptions = {
   },
 })
     ],
+  callbacks: {
+    async session({ session, token }) {
+      if (token?.sub) {
+        // Ensure id available client-side
+        session.user = { ...session.user, id: token.sub };
+      }
+      return session;
+    }
+  },
     
     secret: process.env.NEXTAUTH_SECRET
 };
