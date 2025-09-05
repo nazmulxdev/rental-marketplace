@@ -6,6 +6,7 @@
 // Parent server component supplies any server-passed defaults / messages later.
 
 import { FormEvent, useState } from "react";
+import { FcGoogle } from "react-icons/fc"; // Google icon (lightweight SVG)
 import Link from "next/link";
 
 interface LoginFormProps {
@@ -22,6 +23,17 @@ export function LoginForm({ presetEmail = "" }: LoginFormProps) {
   const [form, setForm] = useState<FormState>({ email: presetEmail, password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // (AUTH_SOCIAL_GOOGLE) Replace with real NextAuth signIn('google') or custom OAuth flow.
+  const handleGoogle = async () => {
+    try {
+      console.log("GOOGLE_LOGIN_CLICKED");
+      // Example (after installing & configuring next-auth):
+      // await signIn('google', { callbackUrl: '/dashboard' });
+  } catch {
+      setError("Google login failed (mock)");
+    }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -80,6 +92,18 @@ export function LoginForm({ presetEmail = "" }: LoginFormProps) {
 
       <button type="submit" className="btn btn-primary w-full" disabled={loading}>
         {loading ? <span className="loading loading-spinner loading-sm" /> : "Login"}
+      </button>
+
+      {/* Social login section */}
+      <div className="divider text-xs uppercase">or</div>
+      <button
+        type="button"
+        onClick={handleGoogle}
+        className="btn btn-outline w-full gap-2"
+        aria-label="Continue with Google"
+      >
+        <FcGoogle size={18} />
+        Continue with Google
       </button>
 
       <div className="mt-6 text-center text-sm">
