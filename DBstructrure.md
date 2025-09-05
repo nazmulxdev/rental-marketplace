@@ -30,6 +30,7 @@ This document defines the **MongoDB schema structure** for the project
   deletedAt: Date
 }
 
+```
 ---
 
 ## ADMIN_APPLICATIONS
@@ -52,6 +53,7 @@ This document defines the **MongoDB schema structure** for the project
   createdAt: Date,
   updatedAt: Date
 }
+```
 
 ---
 
@@ -74,7 +76,7 @@ This document defines the **MongoDB schema structure** for the project
   createdAt: Date,
   updatedAt: Date
 }
-
+```
 ---
 
 ## PROPERTIES
@@ -101,7 +103,7 @@ This document defines the **MongoDB schema structure** for the project
   updatedAt: Date,
   deletedAt: Date
 }
-
+```
 ---
 
 ## AGREEMENTS
@@ -125,7 +127,7 @@ This document defines the **MongoDB schema structure** for the project
   createdAt: Date,
   updatedAt: Date
 }
-
+```
 ---
 
 ## REVIEWS
@@ -146,7 +148,7 @@ This document defines the **MongoDB schema structure** for the project
   createdAt: Date,
   updatedAt: Date
 }
-
+```
 ---
 
 ## BOOKINGS
@@ -164,7 +166,7 @@ This document defines the **MongoDB schema structure** for the project
   createdAt: Date,
   updatedAt: Date
 }
-
+```
 ---
 
 ## PAYMENTS
@@ -188,7 +190,7 @@ This document defines the **MongoDB schema structure** for the project
   createdAt: Date,
   updatedAt: Date
 }
-
+```
 ---
 
 ## THREADS / MESSAGES
@@ -209,8 +211,6 @@ This document defines the **MongoDB schema structure** for the project
 
 **Messages**
 
-```js
-
 {
   _id: ObjectId,
   threadId: ObjectId,
@@ -221,7 +221,7 @@ This document defines the **MongoDB schema structure** for the project
   readBy: [ObjectId],
   createdAt: Date
 }
-
+```
 ---
 
 ## NOTIFICATIONS
@@ -238,7 +238,7 @@ This document defines the **MongoDB schema structure** for the project
   readAt: Date,
   createdAt: Date
 }
-
+```
 ---
 
 ## fAVORITES
@@ -251,7 +251,7 @@ This document defines the **MongoDB schema structure** for the project
   propertyId: ObjectId,
   createdAt: Date
 }
-
+```
 ---
 
 ## REPORTS
@@ -268,7 +268,7 @@ This document defines the **MongoDB schema structure** for the project
   createdAt: Date,
   updatedAt: Date
 }
-
+```
 ---
 
 ## AUDIT_LOGS
