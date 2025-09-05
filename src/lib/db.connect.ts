@@ -31,12 +31,14 @@ if (process.env.NODE_ENV === "development") {
 // Note: this serviceCollection is used only for testing
 export async function getCollection(): Promise<{
   servicesCollection: Collection;
+  usersCollection: Collection
 }> {
   const client: MongoClient = await clientPromise;
   const db: Db = client.db("Rental-Marketplace");
 
   return {
     servicesCollection: db.collection("services"),
+    usersCollection: db.collection("users")
   };
 }
 
