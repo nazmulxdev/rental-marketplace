@@ -1,37 +1,9 @@
-"use client";
+// Registration Page (Server Component Wrapper)
+// -------------------------------------------
+// Provides static shell & mounts interactive RegisterForm client component.
+// Future server logic: redirect if authenticated, fetch invite codes, etc.
 
-// Registration Page (Collaborative Notes)
-// ---------------------------------------
-// PURPOSE:
-//   Basic new user sign-up form (name, email, password, confirm) for RentEase.
-//   Placeholder until real backend / auth provider is integrated.
-//
-// TEAM EXTENSION POINTS:
-//   - AUTH_SUBMIT: Replace mock submit with real API / NextAuth signUp (if custom flow).
-//   - FORM_VALIDATION: Integrate schema validation (Zod/Yup) & show richer messages.
-//   - PASSWORD_RULES: Enforce stronger rules (length, complexity) & realtime feedback.
-//   - SOCIAL_PROVIDERS: Add OAuth sign-up buttons.
-//   - ERROR_UI: Replace inline error text with toast system.
-//
-// DESIGN NOTES:
-//   - Mirrors look & feel of Login page for consistency.
-//   - Minimal CSS via Tailwind / DaisyUI utilities only.
-//   - Accessible form controls, labels, and error region.
-//
-// FUTURE IDEAS:
-//   - Add terms / privacy consent checkbox.
-//   - Email verification flow.
-//
-import { FormEvent, useState } from "react";
-import Link from "next/link";
-import GoogleLogin from "../../components/GoogleLogin";
-
-interface FormState {
-  name: string;
-  email: string;
-  password: string;
-  confirm: string;
-}
+import { RegisterForm } from "@/components/auth/RegisterForm";
 
 export default function RegisterPage() {
   const [form, setForm] = useState<FormState>({
