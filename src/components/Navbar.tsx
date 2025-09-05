@@ -52,10 +52,11 @@ function useSessionLite() {
 
 	useEffect(() => {
 		let cancelled = false;
-		(async () => {
+		let attempts = 0;
+		const fetchSession = async () => {
 			try {
-				const res = await fetch("/api/auth/session", { cache: "no-store" });
-				if (!res.ok) throw new Error("session request failed");
+				const res = await fetch('/api/auth/session', { cache: 'no-store' });
+				if (!res.ok) throw new Error('session request failed');
 				const data = await res.json();
 				if (!cancelled) {
 					setState({ loading: false, user: data?.user ?? null });
@@ -63,9 +64,20 @@ function useSessionLite() {
 			} catch {
 				if (!cancelled) setState({ loading: false, user: null });
 			}
-		})();
+		};
+		fetchSession();
+		// Short polling after mount (helps immediately after credential login redirect-less)
+		const interval = setInterval(() => {
+			attempts += 1;
+			if (attempts > 5) {
+				clearInterval(interval);
+				return;
+			}
+			fetchSession();
+		}, 1000);
 		return () => {
 			cancelled = true;
+			clearInterval(interval);
 		};
 	}, []);
 
@@ -185,7 +197,7 @@ const Navbar = () => {
 				{/* RIGHT: Auth / Actions (desktop) */}
 				<div className="hidden md:flex items-center gap-3">
 					{/* (THEME_TOGGLE) Optionally place <ThemeToggleButton /> here later. */}
-					{auth.loading ? (
+										{auth.loading ? (
 						<span className="loading loading-spinner loading-sm" aria-label="Loading session" />
 					) : auth.isAuthenticated && auth.user ? (
 						<AvatarDropdown user={auth.user} onSignOut={handleSignOut} signingOut={signingOut} />
@@ -194,6 +206,7 @@ const Navbar = () => {
 							Login
 						</Link>
 					)}
+										
 				</div>
 
 				{/* MOBILE: Auth button stays visible on right if we want both icon + login (optional). */}
