@@ -23,8 +23,17 @@ export default async function MyListingsPage({ searchParams }: PageProps) {
   let items: ListingRow[] = [];
   if (userId) {
     const { propertiesCollection } = await getCollection();
+    interface OwnershipFilter {
+      $or: Array<{ ownerAdminId: ObjectId } | { ownerAdminId: string }>;
+    }
+    const ownershipFilter: OwnershipFilter = {
+      $or: [
+        ...(ObjectId.isValid(userId) ? [{ ownerAdminId: new ObjectId(userId) }] : []),
+        { ownerAdminId: userId }
+      ]
+    };
     const docs = await propertiesCollection
-      .find({ ownerAdminId: new ObjectId(userId) }, { projection: { title: 1, type: 1, pricing: 1, status: 1, createdAt: 1 } })
+      .find(ownershipFilter, { projection: { title: 1, type: 1, pricing: 1, status: 1, createdAt: 1 } })
       .sort({ createdAt: -1 })
       .limit(50)
       .toArray();
@@ -32,15 +41,17 @@ export default async function MyListingsPage({ searchParams }: PageProps) {
   }
 
   const createdFlag = searchParams?.created === '1';
+  const updatedFlag = searchParams?.updated === '1';
   return (
     <section className="space-y-6">
       <div className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">My Listings</h1>
         <p className="text-sm text-base-content/70">Manage and monitor properties you have published.</p>
       </div>
-      {createdFlag && (
-        <div className="alert alert-success bg-success/10 border border-success/30 text-success text-sm">
-          Listing created successfully.
+      {(createdFlag || updatedFlag) && (
+        <div className={`alert ${updatedFlag ? 'alert-info bg-info/10 border-info/30 text-info' : 'alert-success bg-success/10 border-success/30 text-success'} text-sm` }>
+          {createdFlag && 'Listing created successfully.'}
+          {updatedFlag && 'Listing updated successfully.'}
         </div>
       )}
       {!userId ? (
