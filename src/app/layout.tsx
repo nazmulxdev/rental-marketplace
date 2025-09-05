@@ -30,7 +30,10 @@ export default function RootLayout({
         <ThemeProvider>
           {/* Global navigation */}
           <Navbar />
+          <main className="min-h-screen max-w-11/12 mx-auto">
+
           {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>
