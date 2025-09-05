@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt"
 import GoogleProvider from "next-auth/providers/google";
 
+
 export const authOptions = {
     providers: [
         //Google Provider
@@ -33,6 +34,21 @@ export const authOptions = {
   },
 })
     ],
+    session: {
+      strategy: 'jwt'
+    },
+    callbacks: {
+      async jwt({token, user}){
+        if(user) {
+          token.role = user.role
+        }
+        return token
+      },
+      async session({session, token}) {
+        session.user.role = token.role;
+        return session
+      }
+    },
     secret: process.env.NEXTAUTH_SECRET
 };
 
