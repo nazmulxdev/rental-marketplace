@@ -2,10 +2,11 @@
 
 This document defines the **MongoDB schema structure** for the project
 
-## USERS 
-
 ---
 
+## USERS 
+
+```js
 {
   _id: ObjectId,
   email: String,                // unique
@@ -33,8 +34,7 @@ This document defines the **MongoDB schema structure** for the project
 
 ## ADMIN_APPLICATIONS
 
----
-
+```js
 {
   _id: ObjectId,
   userId: ObjectId,              // -> users
@@ -57,8 +57,7 @@ This document defines the **MongoDB schema structure** for the project
 
 ## ADMIN_PROFILES
 
----
-
+```js
 {
   _id: ObjectId,
   userId: ObjectId,              // -> users
@@ -76,13 +75,11 @@ This document defines the **MongoDB schema structure** for the project
   updatedAt: Date
 }
 
-
 ---
 
 ## PROPERTIES
 
----
-
+```js
 {
   _id: ObjectId,
   ownerAdminId: ObjectId,       // -> admin_profiles.userId
@@ -109,7 +106,7 @@ This document defines the **MongoDB schema structure** for the project
 
 ## AGREEMENTS
 
----
+```js
 
 {
   _id: ObjectId,
@@ -133,7 +130,7 @@ This document defines the **MongoDB schema structure** for the project
 
 ## REVIEWS
 
----
+```js
 
 {
   _id: ObjectId,
@@ -154,7 +151,7 @@ This document defines the **MongoDB schema structure** for the project
 
 ## BOOKINGS
 
----
+```js
 
 {
   _id: ObjectId,
@@ -172,7 +169,7 @@ This document defines the **MongoDB schema structure** for the project
 
 ## PAYMENTS
 
----
+```js
 
 {
   _id: ObjectId,
@@ -196,9 +193,10 @@ This document defines the **MongoDB schema structure** for the project
 
 ## THREADS / MESSAGES
 
----
-
 **Threads**
+
+```js
+
 {
   _id: ObjectId,
   participantIds: [ObjectId],    // [userId, adminId]
@@ -210,6 +208,9 @@ This document defines the **MongoDB schema structure** for the project
 }
 
 **Messages**
+
+```js
+
 {
   _id: ObjectId,
   threadId: ObjectId,
@@ -225,7 +226,7 @@ This document defines the **MongoDB schema structure** for the project
 
 ## NOTIFICATIONS
 
----
+```js
 
 {
   _id: ObjectId,
@@ -242,7 +243,7 @@ This document defines the **MongoDB schema structure** for the project
 
 ## fAVORITES
 
----
+```js
 
 {
   _id: ObjectId,
@@ -255,7 +256,7 @@ This document defines the **MongoDB schema structure** for the project
 
 ## REPORTS
 
----
+```js
 
 {
   _id: ObjectId,
@@ -268,12 +269,11 @@ This document defines the **MongoDB schema structure** for the project
   updatedAt: Date
 }
 
-
 ---
 
 ## AUDIT_LOGS
 
----
+```js
 
 {
   _id: ObjectId,
@@ -287,8 +287,6 @@ This document defines the **MongoDB schema structure** for the project
   ua: String
 }
 
-
----
 
 
 
