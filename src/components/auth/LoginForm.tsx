@@ -8,6 +8,7 @@
 import { FormEvent, useState } from "react";
 import { FcGoogle } from "react-icons/fc"; // Google icon (lightweight SVG)
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 interface LoginFormProps {
   // (OPTIONAL) Prefill email if redirected from protected route.
@@ -23,15 +24,14 @@ export function LoginForm({ presetEmail = "" }: LoginFormProps) {
   const [form, setForm] = useState<FormState>({ email: presetEmail, password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success,setSuccess] = useState(false)
 
   // (AUTH_SOCIAL_GOOGLE) Replace with real NextAuth signIn('google') or custom OAuth flow.
   const handleGoogle = async () => {
     try {
-      console.log("GOOGLE_LOGIN_CLICKED");
-      // Example (after installing & configuring next-auth):
-      // await signIn('google', { callbackUrl: '/dashboard' });
-  } catch {
-      setError("Google login failed (mock)");
+      await signIn("google");
+    } catch (err) {
+      console.error("Google login error:", err);
     }
   };
 
@@ -43,9 +43,22 @@ export function LoginForm({ presetEmail = "" }: LoginFormProps) {
       return;
     }
     try {
-      setLoading(true);
-      await new Promise((res) => setTimeout(res, 600));
-      console.log("LOGIN_SUBMIT", form);
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: form.email,
+        password: form.password,
+      });
+      if (!res) {
+        setError("Login failed. Try again.");
+      } else if (res.error) {
+        setError(res.error);
+      }
+      else{
+        // Handle here if login success.
+        // Redirect to other page after login
+        // Or show success message
+        setSuccess(true)
+      }
     } catch {
       setError("Login failed (mock)");
     } finally {
@@ -88,7 +101,7 @@ export function LoginForm({ presetEmail = "" }: LoginFormProps) {
         />
       </div>
 
-      <div aria-live="polite" className="min-h-5 text-sm text-error">{error}</div>
+      <div aria-live="polite" className="min-h-5 text-sm text-error">{error} {success && !error && <span className="text-success">Login successful (mock).</span>}</div>
 
       <button type="submit" className="btn btn-primary w-full" disabled={loading}>
         {loading ? <span className="loading loading-spinner loading-sm" /> : "Login"}

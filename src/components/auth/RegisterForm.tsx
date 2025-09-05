@@ -7,6 +7,7 @@
 import { FormEvent, useState } from "react";
 import { FcGoogle } from "react-icons/fc"; // Google icon
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 interface FormState {
   name: string;
@@ -24,10 +25,9 @@ export function RegisterForm() {
   // (AUTH_SOCIAL_GOOGLE) Replace with real signIn('google') when NextAuth or custom OAuth is configured.
   const handleGoogle = async () => {
     try {
-      console.log("GOOGLE_REGISTER_CLICKED");
-      // await signIn('google', { callbackUrl: '/dashboard' });
-    } catch {
-      setError("Google signup failed (mock)");
+      await signIn("google");
+    } catch (err) {
+      console.error("Google login error:", err);
     }
   };
 
@@ -51,9 +51,25 @@ export function RegisterForm() {
 
     try {
       setLoading(true);
-      await new Promise((res) => setTimeout(res, 800));
-      console.log("REGISTER_SUBMIT", form);
-      setSuccess(true);
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          password: form.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Registration failed");
+      } else {
+        setSuccess(true);
+        // Optionally redirect after slight delay:
+        // router.push('/login');
+      }
     } catch {
       setError("Registration failed (mock)");
     } finally {
