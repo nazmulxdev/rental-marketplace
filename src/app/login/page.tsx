@@ -25,6 +25,8 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import GoogleLogin from "../../components/GoogleLogin";
+import { signIn } from "next-auth/react";
 
 interface FormState {
   email: string;
@@ -35,8 +37,9 @@ export default function LoginPage() {
   const [form, setForm] = useState<FormState>({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
-  // (AUTH_SUBMIT) Replace this with real auth call (e.g. fetch('/api/auth/login')).
+  // Handle Login.
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -47,13 +50,22 @@ export default function LoginPage() {
     }
     try {
       setLoading(true);
-      // Simulate network latency.
-      await new Promise((res) => setTimeout(res, 800));
-      // Replace with await signIn("credentials", { redirect: false, ...form }) or custom API.
-  console.log("LOGIN_SUBMIT", form);
-      // Optionally redirect on success.
+
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: form.email,
+        password: form.password,
+      });
+      if (!res) {
+        setError("Login failed. Try again.");
+      } else if (res.error) {
+        setError(res.error);
+      }
+
+      // Optionally redirect on success, before redirect you can show the success message for a while.
       // router.push('/dashboard');
-  } catch {
+      setSuccess(true);
+    } catch {
       setError("Login failed (mock)");
     } finally {
       setLoading(false);
@@ -65,8 +77,12 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="card bg-base-100 border border-base-300 shadow-sm">
           <div className="card-body">
-            <h1 className="text-2xl font-semibold tracking-tight mb-1">Welcome back</h1>
-            <p className="text-base-content/70 text-sm mb-4">Login to manage your rentals and messages.</p>
+            <h1 className="text-2xl font-semibold tracking-tight mb-1">
+              Welcome back
+            </h1>
+            <p className="text-base-content/70 text-sm mb-4">
+              Login to manage your rentals and messages.
+            </p>
 
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               <div className="form-control">
@@ -96,7 +112,9 @@ export default function LoginPage() {
                   className="input input-bordered w-full"
                   placeholder="••••••••"
                   value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, password: e.target.value })
+                  }
                   required
                   minLength={6}
                 />
@@ -105,6 +123,11 @@ export default function LoginPage() {
               {/* (ERROR_UI) Accessible error region */}
               <div aria-live="polite" className="min-h-5 text-sm text-error">
                 {error}
+                {success && !error && (
+                  <span className="text-success">
+                    Account created (mock). You can now login.
+                  </span>
+                )}
               </div>
 
               <button
@@ -112,13 +135,26 @@ export default function LoginPage() {
                 className="btn btn-primary w-full"
                 disabled={loading}
               >
-                {loading ? <span className="loading loading-spinner loading-sm" /> : "Login"}
+                {loading ? (
+                  <span className="loading loading-spinner loading-sm" />
+                ) : (
+                  "Login"
+                )}
               </button>
             </form>
+            <div className="flex items-center my-4">
+              <div className="flex-grow h-px border-t"></div>
+              <span className="mx-2">OR</span>
+              <div className="flex-grow h-px border-t"></div>
+            </div>
 
-            {/* (SOCIAL_PROVIDERS) Insert provider buttons here */}
+            {/* (Social Login) : You can add multiple social login button */}
+            <GoogleLogin />
+
             <div className="mt-6 text-center text-sm">
-              <span className="text-base-content/70">Don&apos;t have an account? </span>
+              <span className="text-base-content/70">
+                Don&apos;t have an account?{" "}
+              </span>
               <Link href="/register" className="link link-primary font-medium">
                 Sign up
               </Link>

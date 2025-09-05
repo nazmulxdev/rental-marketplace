@@ -1,4 +1,4 @@
-// src/app/api/register/route.js
+// src/app/api/auth/register/route.js
 import { getCollection } from "@/lib/db.connect"
 import bcrypt from "bcrypt"
 
