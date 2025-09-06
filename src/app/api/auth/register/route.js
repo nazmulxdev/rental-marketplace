@@ -1,31 +1,54 @@
 // src/app/api/register/route.js
-import { getCollection } from "@/lib/db.connect"
-import bcrypt from "bcrypt"
+import { getCollection } from "@/lib/db.connect";
+import bcrypt from "bcrypt";
 
 export async function POST(req) {
   try {
-    const { name, email, password } = await req.json()
+    const { name, email, password } = await req.json();
 
-    const { usersCollection } = await getCollection() 
+    const { usersCollection } = await getCollection();
 
     //Check if the user already exist
-    const existingUser = await usersCollection.findOne({ email })
+    const existingUser = await usersCollection.findOne({ email });
     if (existingUser) {
-      return new Response(JSON.stringify({ error: "User already exists" }), { status: 400 })
+      return new Response(JSON.stringify({ error: "User already exists" }), {
+        status: 400,
+      });
     }
 
     //Hashed the password for user privacy
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await usersCollection.insertOne({
-      name,
-      email,
+      email: email, // unique
+      emailVerified: true,
       password: hashedPassword,
-      role: 'user'
-    })
+      roles: ["USER"], // SUPER_ADMIN | ADMIN | MEMBER | USER
+      status: "active", // active | suspended | banned
+      profile: {
+        name: name,
+        phone: '',
+        avatarUrl: '',
+        address: {
+          city: '',
+          district: '',
+          division: '',
+          country: '',
+          postalCode: '',
+        },
+      },
+      createdAt: new Date(),
+      updatedAt: '',
+      deletedAt: '',
+    });
 
-    return new Response(JSON.stringify({ success: true, userId: newUser.insertedId }), { status: 201 })
+    return new Response(
+      JSON.stringify({ success: true, userId: newUser.insertedId }),
+      { status: 201 }
+    );
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500 })
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+    });
   }
 }
