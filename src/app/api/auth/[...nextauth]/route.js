@@ -28,7 +28,10 @@ export const authOptions = {
         if (!user) throw new Error("No user found");
 
         // Verify password
-        const isValid = await bcrypt.compare(credentials.password, user.password);
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
         if (!isValid) throw new Error("Invalid password");
 
         return { id: user._id.toString(), name: user.name, email: user.email };
@@ -51,7 +54,6 @@ export const authOptions = {
             emailVerified: true,
             roles: "USER", // SUPER_ADMIN | ADMIN | MEMBER | USER
             status: "active",
-            provider: account.provider,
             profile: {
               name: user.name || "",
               phone: "",
@@ -65,15 +67,18 @@ export const authOptions = {
               },
             },
             createdAt: new Date(),
-            updatedAt: "",
+            updatedAt: new Date(),
             deletedAt: null,
           });
 
           existing = {
             _id: insert.insertedId,
             email: user.email,
-            name: user.name,
-            image: user.image,
+            roles: "USER",
+            profile: {
+              name: user.name || "",
+              avatarUrl: user.image || "",
+            },
           };
         } else {
           // Update existing user's profile photo and name on each Google login
@@ -93,7 +98,7 @@ export const authOptions = {
 
         // Attach MongoDB _id to user object
         user.id = existing._id.toString();
-        user.role = existing.roles ? existing.roles[0] : "USER";
+        user.role = existing.roles || "USER";
         user.image = existing.profile?.avatarUrl || user.image;
 
         return true;
@@ -107,10 +112,12 @@ export const authOptions = {
       try {
         if (token?.email) {
           const { usersCollection } = await getCollection();
-          const existing = await usersCollection.findOne({ email: token.email });
+          const existing = await usersCollection.findOne({
+            email: token.email,
+          });
           if (existing) {
             token.sub = existing._id.toString();
-            token.role = existing.roles ? existing.roles[0] : "USER";
+            token.role = existing.roles || "USER";
             token.image = existing.profile?.avatarUrl || null;
           }
         }

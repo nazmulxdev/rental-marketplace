@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 export async function POST(req) {
   try {
-    const { name, email, password } = await req.json();
+    const { name, email, password, image } = await req.json();
 
     const { usersCollection } = await getCollection();
 
@@ -23,12 +23,12 @@ export async function POST(req) {
       email: email, // unique
       emailVerified: true,
       password: hashedPassword,
-      roles: ["USER"], // SUPER_ADMIN | ADMIN | MEMBER | USER
+      roles: "USER", // SUPER_ADMIN | ADMIN | MEMBER | USER
       status: "active", // active | suspended | banned
       profile: {
         name: name,
         phone: '',
-        avatarUrl: '',
+        avatarUrl: image || '',
         address: {
           city: '',
           district: '',
@@ -38,8 +38,8 @@ export async function POST(req) {
         },
       },
       createdAt: new Date(),
-      updatedAt: '',
-      deletedAt: '',
+      updatedAt: null,
+      deletedAt: null,
     });
 
     return new Response(
