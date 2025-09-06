@@ -49,7 +49,7 @@ export const authOptions = {
           const insert = await usersCollection.insertOne({
             email: user.email,
             emailVerified: true,
-            roles: ["USER"], // SUPER_ADMIN | ADMIN | MEMBER | USER
+            roles: "USER", // SUPER_ADMIN | ADMIN | MEMBER | USER
             status: "active",
             provider: account.provider,
             profile: {

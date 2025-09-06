@@ -2,7 +2,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+<<<<<<< HEAD
 import ClientWrapper from "../components/ClientWrapper"; // new client wrapper
+=======
+import Navbar from "../components/Navbar";
+import ClientWrapper from "../components/ClientWrapper";
+>>>>>>> 1d77994cb2148e1c585c100326f983001c51a1c5
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,9 +27,19 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+<<<<<<< HEAD
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {/* Everything that needs React Context goes inside the client wrapper */}
         <ClientWrapper>{children}</ClientWrapper>
+=======
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ClientWrapper>
+          <Navbar />
+          <main className="min-h-screen mx-auto">{children}</main>
+        </ClientWrapper>
+>>>>>>> 1d77994cb2148e1c585c100326f983001c51a1c5
       </body>
     </html>
   );
