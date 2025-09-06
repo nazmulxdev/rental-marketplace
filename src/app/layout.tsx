@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "../context/ThemeProvider";
 import Navbar from "../components/Navbar";
+import ClientWrapper from "../components/ClientWrapper";
+import ThemeProvider from "../context/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +33,10 @@ export default function RootLayout({
           <Navbar />
           {/* <main className="min-h-screen max-w-11/12 mx-auto"> */}
           <main className="min-h-screen">
-
-          {children}
+            {children}    
           </main>
         </ThemeProvider>
       </body>
-    </html>
+    </html> 
   );
 }

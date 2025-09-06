@@ -1,10 +1,7 @@
 "use client";
 import { useState } from "react";
 
-//onFilter only when filtering handled by front end
-//setListings as props instead onFilter ,if data fetch from backend
-const ListingFilters = ({ onFilter }) => {
-
+const ListingFilters = ({ onApply }) => {
   const [filters, setFilters] = useState({
     search: "",
     location: "",
@@ -12,29 +9,17 @@ const ListingFilters = ({ onFilter }) => {
     propertyType: "",
   });
 
-  //If listings data fetched from backend
-  // const [listings, setListings] = useState([])
-
-  // Handle the onChange value
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle apply filters will use the function from ListingCards comonent function, and the filters parameter will give access for the filters data on ListingCards component
   const handleApplyFilters = () => {
-    // Remove this if you are filtering with backend
-    onFilter(filters);
-
-    // 🔗 BACKEND INTEGRATION (later)
-    // fetch(`/api/listings?search=${filters.search}&location=${filters.location}&price=${filters.priceRange}&type=${filters.propertyType}`)
-    //   .then(res => res.json())
-    //   .then(data => setListings(data));
+    onApply(filters); // Pass filters to parent
   };
 
   return (
-    <div className="w-full rounded-lg grid md:grid-cols-4 gap-4">
-      {/* Search */}
+    <div className="w-full rounded-lg grid md:grid-cols-4 gap-4 mb-6">
       <input
         type="text"
         name="search"
@@ -43,8 +28,6 @@ const ListingFilters = ({ onFilter }) => {
         onChange={handleChange}
         className="border rounded-lg p-2 w-full"
       />
-
-      {/* Location */}
       <input
         type="text"
         name="location"
@@ -53,8 +36,6 @@ const ListingFilters = ({ onFilter }) => {
         onChange={handleChange}
         className="border rounded-lg p-2 w-full"
       />
-
-      {/* Price Range */}
       <select
         name="priceRange"
         value={filters.priceRange}
@@ -67,8 +48,6 @@ const ListingFilters = ({ onFilter }) => {
         <option value="10000-20000">৳10000 - ৳20000</option>
         <option value="20000+">৳20000+</option>
       </select>
-
-      {/* Property Type */}
       <select
         name="propertyType"
         value={filters.propertyType}
@@ -81,8 +60,6 @@ const ListingFilters = ({ onFilter }) => {
         <option value="room">Room</option>
         <option value="office">Office</option>
       </select>
-
-      {/* Apply Button */}
       <div className="md:col-span-4 flex justify-end">
         <button
           onClick={handleApplyFilters}
