@@ -40,8 +40,11 @@ export default async function MyListingsPage({ searchParams }: PageProps) {
     items = docs.map(d => ({ _id: d._id.toString(), title: d.title, type: d.type, pricing: d.pricing, status: d.status, createdAt: d.createdAt }));
   }
 
-  const createdFlag = searchParams?.created === '1';
-  const updatedFlag = searchParams?.updated === '1';
+  const params = await searchParams;
+
+  const createdFlag = params?.created === '1';
+  const updatedFlag = params?.updated === '1';
+
   return (
     <section className="space-y-6">
       <div className="flex flex-col gap-2">
