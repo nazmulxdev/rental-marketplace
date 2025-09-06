@@ -90,25 +90,25 @@ const Navbar = () => {
     [pathname]
   );
 
-  return (
-    <header className="sticky top-0 z-40 w-full border-b border-base-300 bg-base-100/80 backdrop-blur supports-[backdrop-filter]:bg-base-100/60">
-      {/* Outer max-width container */}
-      <div className="mx-auto flex h-16 max-w-11/12 items-center gap-6 px-4 sm:px-6 lg:px-8">
-        {/* LEFT: Logo / Brand */}
-        <div className="flex items-center gap-2 shrink-0">
-          <Link href="/" className="flex items-center gap-2 group">
-            {/* If a custom logo asset is added later, replace next.svg below (public/rentease-logo.svg) */}
-            <Image
-              src="/next.svg"
-              alt="RentEase logo"
-              width={32}
-              height={32}
-              className="dark:invert transition-transform group-hover:scale-105"
-              priority
-            />
-            <span className="font-semibold text-lg tracking-tight">RentEase</span>
-          </Link>
-        </div>
+	return (
+		<header className="sticky top-0 z-40 w-full border-b border-base-300 bg-base-100/80 backdrop-blur supports-[backdrop-filter]:bg-base-100/60 ">
+			{/* Outer max-width container */}
+			<div className="mx-auto flex h-16 max-w-11/12 items-center gap-6 px-4 sm:px-6 lg:px-8">
+				{/* LEFT: Logo / Brand */}
+				<div className="flex items-center gap-2 shrink-0">
+					<Link href="/" className="flex items-center gap-2 group">
+						{/* If a custom logo asset is added later, replace next.svg below (public/rentease-logo.svg) */}
+						<Image
+							src="/next.svg"
+							alt="RentEase logo"
+							width={32}
+							height={32}
+							className="dark:invert transition-transform group-hover:scale-105"
+							priority
+						/>
+						<span className="font-semibold text-lg tracking-tight">RentEase</span>
+					</Link>
+				</div>
 
         {/* MOBILE: Hamburger button (hidden >= md) */}
         <div className="flex md:hidden ml-auto items-center">
