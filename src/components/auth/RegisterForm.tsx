@@ -8,6 +8,7 @@ import { FormEvent, useState } from "react";
 import { FcGoogle } from "react-icons/fc"; // Google icon
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 interface FormState {
   name: string;
@@ -17,8 +18,14 @@ interface FormState {
 }
 
 export function RegisterForm() {
-  const [form, setForm] = useState<FormState>({ name: "", email: "", password: "", confirm: "" });
+  const [form, setForm] = useState<FormState>({
+    name: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
   const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -29,6 +36,30 @@ export function RegisterForm() {
     } catch (err) {
       console.error("Google login error:", err);
     }
+  };
+
+  // uploading image
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    const imageData = new FormData();
+    imageData.append("file", file);
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: imageData,
+    });
+
+    if (!res.ok) {
+      console.log("Upload failed", res.statusText);
+      return;
+    }
+    const data = await res.json();
+
+    if (data?.url) setImageUrl(data?.url);
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -57,6 +88,7 @@ export function RegisterForm() {
         body: JSON.stringify({
           name: form.name,
           email: form.email,
+          image: imageUrl,
           password: form.password,
         }),
       });
@@ -79,6 +111,26 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      {/* Profile Photo Upload */}
+      <div className="flex flex-col items-center">
+        <label className="w-32 h-32 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer hover:border-primary">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt="Uploaded image"
+              width={128}
+              height={128}
+              className="rounded-full object-cover"
+            />
+          ) : (
+            <span className="text-gray-400 text-sm text-center">
+              Click to upload photo
+            </span>
+          )}
+          <input type="file" className="hidden" onChange={handleUpload} />
+        </label>
+      </div>
+
       <div className="form-control">
         <label className="label" htmlFor="name">
           <span className="label-text font-medium">Full name</span>
@@ -146,11 +198,23 @@ export function RegisterForm() {
 
       <div aria-live="polite" className="min-h-5 text-sm">
         {error && <span className="text-error">{error}</span>}
-        {success && !error && <span className="text-success">Account created (mock). You can now login.</span>}
+        {success && !error && (
+          <span className="text-success">
+            Account created (mock). You can now login.
+          </span>
+        )}
       </div>
 
-      <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-        {loading ? <span className="loading loading-spinner loading-sm" /> : "Create account"}
+      <button
+        type="submit"
+        className="btn btn-primary w-full"
+        disabled={loading}
+      >
+        {loading ? (
+          <span className="loading loading-spinner loading-sm" />
+        ) : (
+          "Create account"
+        )}
       </button>
 
       <div className="divider text-xs uppercase">or</div>
