@@ -3,6 +3,8 @@
 // Initial placeholder. Replace with real stats, recent messages, listings summary.
 // Future: fetch user-specific data (listings, unread messages, upcoming visits).
 import React from "react";
+import BeAMember from "../../components/dashboard/BeAMember";
+import BeAAdmin from "../../components/dashboard/BeAAdmin";
 
 export default async function DashboardOverviewPage() {
   // (DATA_FETCH) Later: fetch data from server/database here.
@@ -27,6 +29,10 @@ export default async function DashboardOverviewPage() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="flex gap-2 flex-col md:flex-row md:items-start items-center md:h-full">
+        <BeAMember />
+        <BeAAdmin />
       </div>
     </section>
   );
