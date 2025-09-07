@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 export async function GET(req, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const { propertiesCollection } = await getCollection();
 
     const listing = await propertiesCollection.findOne({ _id: new ObjectId(id) });

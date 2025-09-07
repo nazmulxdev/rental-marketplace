@@ -34,7 +34,7 @@ export const authOptions = {
         );
         if (!isValid) throw new Error("Invalid password");
 
-        return { id: user._id.toString(), name: user.name, email: user.email };
+        return { id: user._id.toString(), name: user.name, email: user.email, role: user.roles || "USER",image: user.profile?.avatarUrl || null };
       },
     }),
   ],

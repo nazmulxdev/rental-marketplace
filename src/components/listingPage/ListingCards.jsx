@@ -84,13 +84,11 @@ export default function ListingCards() {
     </div>
 
     {/* View Details Button */}
-    <Link href={`/listings/${item._id}`} className="mb-4">
-    <button 
-      className="inline-block text-center py-2 px-5 rounded-full btn btn-primary"
-    >
+    <div>
+    <Link href={`/listings/${item._id}`} className="mb-4 text-center py-2 px-5 rounded-full btn btn-primary">    
       View Details
-    </button>
       </Link>
+    </div>
 
     {/* Stats */}
     <div className="flex justify-between text-xs text-gray-400 mt-auto">

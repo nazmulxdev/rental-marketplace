@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 // DashboardSidebar (Client Component)
 // -----------------------------------
 // Renders navigational links for dashboard routes with active state highlighting.
@@ -10,31 +11,37 @@ import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { IconType } from "react-icons";
 import { FiHome, FiPlusCircle, FiMessageCircle, FiSettings, FiUser, FiFolder } from "react-icons/fi";
+type Role = "SUPER_ADMIN" | "ADMIN" | "MEMBER" | "USER";
 
 interface DashLink {
   label: string;
   href: string;
   icon: IconType;
+  roles: Role[]
 }
 
 const DASH_LINKS: DashLink[] = [
-  { label: "Overview", href: "/dashboard", icon: FiHome },
-  { label: "My Listings", href: "/dashboard/my-listings", icon: FiFolder },
-  { label: "Add Listing", href: "/dashboard/add-listing", icon: FiPlusCircle },
-  { label: "Messages", href: "/dashboard/messages", icon: FiMessageCircle },
-  { label: "Profile", href: "/dashboard/profile", icon: FiUser },
-  { label: "Settings", href: "/dashboard/settings", icon: FiSettings },
+  { label: "Overview", href: "/dashboard", icon: FiHome, roles: ["SUPER_ADMIN", "ADMIN", "MEMBER", "USER"] },
+  { label: "My Listings", href: "/dashboard/my-listings", icon: FiFolder, roles: ["SUPER_ADMIN", "ADMIN", "MEMBER"] },
+  { label: "Add Listing", href: "/dashboard/add-listing", icon: FiPlusCircle, roles: ["SUPER_ADMIN","ADMIN"] },
+  { label: "Messages", href: "/dashboard/messages", icon: FiMessageCircle, roles: ["MEMBER", "ADMIN", "SUPER_ADMIN"] },
+  { label: "Profile", href: "/dashboard/profile", icon: FiUser, roles: ["USER", "ADMIN", "MEMBER", "SUPER_ADMIN"] },
+  { label: "Settings", href: "/dashboard/settings", icon: FiSettings, roles: ["SUPER_ADMIN","ADMIN"] },
 ];
 
 export default function DashboardSidebar() {
   const pathname = usePathname();
-  const items = useMemo(
-    () =>
-      DASH_LINKS.map((l) => ({
+  const { data: session } = useSession();
+const role = session?.user?.role || "USER";
+
+  const items = useMemo(() =>
+    DASH_LINKS
+      .filter((l) => l.roles.includes(role)) // only allowed for current role
+      .map((l) => ({
         ...l,
         active: l.href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(l.href),
       })),
-    [pathname]
+    [pathname, role]
   );
 
   return (
