@@ -7,7 +7,7 @@ const  ListingDetailsPage = async ({params}) => {
   const { id } = await params;
 
   const res = await fetch(`${process.env.NEXTAUTH_URL}/api/listings/${id}`, {
-    cache: "no-store",
+    next: {revalidate: 60},
   });
 
   if (!res.ok) {
