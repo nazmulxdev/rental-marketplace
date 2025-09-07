@@ -7,9 +7,9 @@ const BeAMember = () => {
     const [error, setError] = useState('');
       const [success, setSuccess] = useState('');
   const role = session?.user.role == "USER";
-  console.log(role)
-    const handleMemberRegister = async(email) => {
-        const res = await fetch("/api/role-request", {
+  const email = session?.user?.email
+    const handleMemberRegister = async() => {
+        const res = await fetch("/api/admin/member-request", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, requestedRole: "MEMBER" }),
@@ -59,7 +59,7 @@ const BeAMember = () => {
             {/* CTA Button */}
             <button
             onClick={handleMemberRegister}
-             className="w-full py-3 rounded-xl btn btn-secondary font-semibold shadow hover:shadow-md hover:opacity-90 transition">
+             className="w-full py-3 rounded-xl btn btn-secondary font-semibold shadow hover:shadow-md hover:opacity-90 transition my-2">
               Become a Member
             </button>
     

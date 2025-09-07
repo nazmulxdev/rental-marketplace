@@ -1,3 +1,4 @@
+//(POST) : api/admin/member-request
 import { getCollection } from "@/lib/db.connect";
 import { NextResponse } from "next/server";
 
@@ -19,12 +20,6 @@ export async function POST(req) {
       );
     }
 
-    if (requestedRole === "ADMIN" && !["USER", "MEMBER"].includes(user.roles)) {
-      return NextResponse.json(
-        { error: "Only USER or MEMBER can request to become ADMIN" },
-        { status: 400 }
-      );
-    }
 
     // ✅ Save request
     await usersCollection.updateOne(
@@ -41,6 +36,26 @@ export async function POST(req) {
       { message: `Role request for ${requestedRole} submitted successfully` },
       { status: 200 }
     );
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+
+
+//(GET) : api/admin/member-request
+
+export async function GET() {
+  try {
+    const { usersCollection } = await getCollection();
+
+    // Fetch users who requested MEMBER role
+    const memberRequests = await usersCollection
+      .find({ "profile.roleRequest": "MEMBER" }) // only pending member requests
+      .project({ email: 1, "profile.roleRequest": 1, updatedAt: 1 })
+      .toArray();
+
+    return NextResponse.json({ memberRequests }, { status: 200 });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });

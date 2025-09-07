@@ -7,12 +7,12 @@ const BeAAdmin = () => {
   const [success, setSuccess] = useState('');
   const { data: session } = useSession();
   const role = session?.user.role == "MEMBER";
-  const email = session?.user.email;
-  const handleAdminRegister = async () => {
-    const res = await fetch("/api/role-request", {
+  console.log(session)
+  const handleAdminRegister = async (userId) => {
+    const res = await fetch("/api/admin/admin-request", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, requestedRole: "ADMIN" }),
+      body: JSON.stringify({ userId }),
     });
 
     const data = await res.json();
@@ -57,7 +57,7 @@ const BeAAdmin = () => {
 
           {/* CTA Button */}
           <button
-            onClick={handleAdminRegister}
+            onClick={() => handleAdminRegister(session?.user?.id)}
             className="w-full py-3 rounded-xl btn btn-secondary font-semibold shadow hover:shadow-md hover:opacity-90 transition my-2"
           >
             Become a Admin
