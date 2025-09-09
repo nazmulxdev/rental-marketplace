@@ -50,7 +50,6 @@ function CheckoutForm({ listing }) {
   const [success, setSuccess] = useState(null);
   const [booked, setBooked] = useState(false);
   const amount=listing.pricing?.monthly;
-  console.log(listing)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,22 +92,6 @@ function CheckoutForm({ listing }) {
   setBooked(true);
 
   // save payment history
-  /* _id: ObjectId,
-  type: 'onboarding_fee' | 'rent' | 'deposit' | 'refund' | 'payout',
-  payerUserId: ObjectId,          // who paid
-  payeeUserId: ObjectId,          // who received
-  agreementId: ObjectId,          // optional -> agreements
-  applicationId: ObjectId,        // optional -> admin_applications
-  amount: Number,                 // in smallest unit
-  currency: 'BDT' | 'USD',
-  status: 'pending' | 'paid' | 'failed' | 'refunded',
-  transactionId: String,          // from gateway (Stripe/SSLCommerz/etc.)
-  paymentMethod: 'stripe' | 'bkash' | 'nagad' | 'bank',
-  paymentAt: Date,                // actual confirmation time
-  meta: Object,                   // raw response from gateway
-  createdAt: Date,
-  updatedAt: Date
-  */
   const data = {
     payment_username: name,
     type: 'rent',
