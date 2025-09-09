@@ -44,12 +44,13 @@ function CheckoutForm({ listing }) {
   const elements = useElements();
   const [name, setName] = useState(session?.data?.user?.name || "");
   const [email, setEmail] = useState(session?.data?.user?.email || "");
+  const userId = session?.data?.user?.id;
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [booked, setBooked] = useState(false);
   const amount=listing.pricing?.monthly;
-
+  console.log(listing)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,24 +89,56 @@ function CheckoutForm({ listing }) {
       }
 
       if (paymentIntent && paymentIntent.status === "succeeded") {
-        setSuccess("✅ Payment succeeded! Thank you.");
-        setBooked(true);
-        // console.log(paymentIntent);
+  setSuccess("✅ Payment succeeded! Thank you.");
+  setBooked(true);
 
-        const data = {
-          payment_username: name,
-          payment_useremail: email,
-          propertiesId: listing._id,
-          amount: paymentIntent.amount,
-          currency: paymentIntent.currency,
-          id: paymentIntent.id,
-          payment_method: paymentIntent.payment_method,
-        };
+  // save payment history
+  /* _id: ObjectId,
+  type: 'onboarding_fee' | 'rent' | 'deposit' | 'refund' | 'payout',
+  payerUserId: ObjectId,          // who paid
+  payeeUserId: ObjectId,          // who received
+  agreementId: ObjectId,          // optional -> agreements
+  applicationId: ObjectId,        // optional -> admin_applications
+  amount: Number,                 // in smallest unit
+  currency: 'BDT' | 'USD',
+  status: 'pending' | 'paid' | 'failed' | 'refunded',
+  transactionId: String,          // from gateway (Stripe/SSLCommerz/etc.)
+  paymentMethod: 'stripe' | 'bkash' | 'nagad' | 'bank',
+  paymentAt: Date,                // actual confirmation time
+  meta: Object,                   // raw response from gateway
+  createdAt: Date,
+  updatedAt: Date
+  */
+  const data = {
+    payment_username: name,
+    type: 'rent',
+    payerUserId: userId,
+    payeeUserId: listing?.ownerAdminId,
+    payment_useremail: email,
+    propertiesId: listing._id,
+    amount: paymentIntent.amount,
+    currency: paymentIntent.currency,
+    transactionId: paymentIntent.id,
+    payment_method: paymentIntent.payment_method,
+    paymentAt: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+  await saveThePaymentHistory(data);
 
-        // console.log("Saving payment:", data);
-
-        const history = await saveThePaymentHistory(data);
-      } else {
+  // ✅ create booking entry
+  await fetch("/api/bookings", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userId: session?.data?.user?.id,          // seeker
+      adminUserId: listing.ownerAdminId,         // landlord
+      propertyId: listing._id,
+      slot: { start: new Date(), end: null, timezone: "Asia/Dhaka" },
+      notes: "Initial booking after payment",
+    }),
+  });
+} else {
         setError("Payment not completed. Status: " + paymentIntent?.status);
       }
     } catch (err) {
@@ -132,7 +165,7 @@ function CheckoutForm({ listing }) {
         <div className="text-right">
           <div className="text-sm text-gray-500">Amount</div>
           <div className="text-xl font-bold text-indigo-700">
-            ৳ {(amount / 100).toLocaleString()}
+            ৳ {(amount).toLocaleString()}
           </div>
         </div>
       </div>
@@ -211,7 +244,7 @@ function CheckoutForm({ listing }) {
         >
           {processing
             ? "Processing..."
-            : `Pay ৳ ${(amount / 100).toLocaleString()}`}
+            : `Pay ৳ ${(amount).toLocaleString()}`}
         </button>
       </form>
     </motion.div>
