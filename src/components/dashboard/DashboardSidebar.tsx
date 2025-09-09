@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { IconType } from "react-icons";
 import { FiHome, FiPlusCircle, FiMessageCircle, FiSettings, FiUser, FiFolder } from "react-icons/fi";
+import { RiAdminLine } from "react-icons/ri"
 type Role = "SUPER_ADMIN" | "ADMIN" | "MEMBER" | "USER";
 
 interface DashLink {
@@ -21,7 +22,8 @@ interface DashLink {
 }
 
 const DASH_LINKS: DashLink[] = [
-  { label: "Overview", href: "/dashboard", icon: FiHome, roles: ["SUPER_ADMIN", "ADMIN", "MEMBER", "USER"] },
+  { label: "Overview", href: "/dashboard", icon: FiHome, roles: ["SUPER_ADMIN"] },
+  { label: "Admin Panel", href: "/dashboard/admin-panel", icon: RiAdminLine, roles: ["SUPER_ADMIN", "ADMIN", "MEMBER", "USER"] },
   { label: "My Listings", href: "/dashboard/my-listings", icon: FiFolder, roles: ["SUPER_ADMIN", "ADMIN", "MEMBER"] },
   { label: "Add Listing", href: "/dashboard/add-listing", icon: FiPlusCircle, roles: ["SUPER_ADMIN","ADMIN"] },
   { label: "Messages", href: "/dashboard/messages", icon: FiMessageCircle, roles: ["MEMBER", "ADMIN", "SUPER_ADMIN"] },

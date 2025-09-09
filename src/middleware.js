@@ -4,6 +4,7 @@ import { getToken } from "next-auth/jwt";
 
 // Restrict specific pages
 const protectedRoutes = {
+  "/dashboard/admin-panel": ["SUPER_ADMIN"],
   "/dashboard/add-listing": ["SUPER_ADMIN", "ADMIN"],
   "/dashboard/settings": ["SUPER_ADMIN", "ADMIN"],
   "/dashboard/my-listings": ["SUPER_ADMIN", "ADMIN", "MEMBER"],

@@ -34,6 +34,8 @@ export async function getCollection(): Promise<{
   usersCollection: Collection;
   propertiesCollection: Collection;
   paymentCollection: Collection;
+  adminApplication: Collection;
+  adminsCollection: Collection;
 }> {
   const client: MongoClient = await clientPromise;
   const db: Db = client.db("Rental-Marketplace");
@@ -43,6 +45,8 @@ export async function getCollection(): Promise<{
     usersCollection: db.collection("users"),
     propertiesCollection: db.collection("properties"),
     paymentCollection: db.collection("paymentCollection"),
+    adminApplication: db.collection("admin_application"),
+    adminsCollection: db.collection("admins")
   };
 }
 
