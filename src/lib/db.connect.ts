@@ -33,6 +33,7 @@ export async function getCollection(): Promise<{
   servicesCollection: Collection;
   usersCollection: Collection;
   propertiesCollection: Collection;
+  paymentCollection: Collection;
   adminApplication: Collection;
   adminsCollection: Collection;
 }> {
@@ -43,6 +44,7 @@ export async function getCollection(): Promise<{
     servicesCollection: db.collection("services"),
     usersCollection: db.collection("users"),
     propertiesCollection: db.collection("properties"),
+    paymentCollection: db.collection("paymentCollection"),
     adminApplication: db.collection("admin_application"),
     adminsCollection: db.collection("admins")
   };
