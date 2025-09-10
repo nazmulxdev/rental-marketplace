@@ -28,6 +28,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useMemo, useState, useCallback, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import ThemeToggleButton from "./ThemeToggleButton";
 
 // (NAV_LINKS) Centralized definition so designers & devs can reorder easily.
 const NAV_ITEMS: Array<{ label: string; href: string }> = [
@@ -37,10 +38,9 @@ const NAV_ITEMS: Array<{ label: string; href: string }> = [
 ];
 
 // Utility: builds classes for nav links; adjust palette/tokens here only.
-const linkBaseClasses =
-  "px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150";
-const inactiveClasses = "text-base-content/70 hover:text-base-content hover:bg-base-200";
-const activeClasses = "text-primary bg-primary/10 hover:bg-primary/20";
+const linkBaseClasses = "relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60";
+const inactiveClasses = "text-base-content/70 hover:text-base-content/90 hover:bg-base-200/70 dark:hover:bg-base-200/20";
+const activeClasses = "text-primary bg-primary/10 shadow-sm after:absolute after:inset-x-4 after:-bottom-[6px] after:h-[3px] after:rounded-full after:bg-gradient-to-r after:from-primary/80 after:to-secondary/60";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -91,27 +91,11 @@ const Navbar = () => {
   );
 
 	return (
-		<header className="sticky top-0 z-40 w-full border-b border-base-300 bg-base-100/80 backdrop-blur supports-[backdrop-filter]:bg-base-100/60 ">
+    <header className="sticky top-0 z-40 w-full border-b border-base-300/70 bg-base-100/70 backdrop-blur-xl supports-[backdrop-filter]:bg-base-100/40 shadow-sm">
 			{/* Outer max-width container */}
-			<div className="mx-auto flex h-16 max-w-11/12 items-center gap-6 px-4 sm:px-6 lg:px-8">
-				{/* LEFT: Logo / Brand */}
-				<div className="flex items-center gap-2 shrink-0">
-					<Link href="/" className="flex items-center gap-2 group">
-						{/* If a custom logo asset is added later, replace next.svg below (public/rentease-logo.svg) */}
-						<Image
-							src="/next.svg"
-							alt="RentEase logo"
-							width={32}
-							height={32}
-							className="dark:invert transition-transform group-hover:scale-105"
-							priority
-						/>
-						<span className="font-semibold text-lg tracking-tight">RentEase</span>
-					</Link>
-				</div>
-
-        {/* MOBILE: Hamburger button (hidden >= md) */}
-        <div className="flex md:hidden ml-auto items-center">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
+        {/* MOBILE: Hamburger (left) */}
+        <div className="flex md:hidden items-center">
           <button
             onClick={toggle}
             className="btn btn-ghost btn-sm px-2"
@@ -119,24 +103,31 @@ const Navbar = () => {
             aria-expanded={open}
             aria-controls="mobile-nav-panel"
           >
-            {/* Simple icon (3 bars / X) using pure spans to avoid extra deps */}
             <span className="relative block h-4 w-5">
-              <span
-                className={`absolute left-0 top-0 h-0.5 w-full rounded bg-current transition-transform duration-300 ${open ? "translate-y-1.5 rotate-45" : ""}`}
-              />
-              <span
-                className={`absolute left-0 top-1.5 h-0.5 w-full rounded bg-current transition-opacity duration-300 ${open ? "opacity-0" : "opacity-100"}`}
-              />
-              <span
-                className={`absolute left-0 top-3 h-0.5 w-full rounded bg-current transition-transform duration-300 ${open ? "-translate-y-1.5 -rotate-45" : ""}`}
-              />
+              <span className={`absolute left-0 top-0 h-0.5 w-full rounded bg-current transition-transform duration-300 ${open ? "translate-y-1.5 rotate-45" : ""}`} />
+              <span className={`absolute left-0 top-1.5 h-0.5 w-full rounded bg-current transition-opacity duration-300 ${open ? "opacity-0" : "opacity-100"}`} />
+              <span className={`absolute left-0 top-3 h-0.5 w-full rounded bg-current transition-transform duration-300 ${open ? "-translate-y-1.5 -rotate-45" : ""}`} />
             </span>
           </button>
+        </div>
+        {/* LEFT: Logo / Brand */}
+        <div className="flex items-center gap-3 shrink-0">
+          <Link href="/" className="group flex items-center gap-2">
+            <Image
+              src="/next.svg"
+              alt="RentEase logo"
+              width={34}
+              height={34}
+              className="dark:invert transition-transform duration-300 group-hover:scale-110 drop-shadow-sm"
+              priority
+            />
+            <span className="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">RentEase</span>
+          </Link>
         </div>
 
         {/* CENTER: Primary navigation (desktop) (NAV_LINKS) */}
         <nav aria-label="Primary" className="hidden md:flex flex-1 justify-center">
-          <ul className="flex items-center gap-1 md:gap-2">
+          <ul className="flex items-center gap-1 md:gap-3">
             {items.map(({ href, label, active }) => (
               <li key={href}>
                 <Link
@@ -151,30 +142,30 @@ const Navbar = () => {
         </nav>
 
         {/* RIGHT: Auth / Actions (desktop) */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-4">
           {/* (THEME_TOGGLE) Optionally place <ThemeToggleButton /> here later. */}
           {loading ? (
             <span className="loading loading-spinner loading-sm" aria-label="Loading session" />
           ) : isAuthenticated && session.user ? (
             <AvatarDropdown user={session.user} onSignOut={handleSignOut} signingOut={signingOut} />
           ) : (
-            <Link href="/login" className="btn btn-sm md:btn-md btn-primary">
-              Login
-            </Link>
+            <Link href="/login" className="btn btn-sm md:btn-md btn-primary shadow">Login</Link>
           )}
+          <ThemeToggleButton />
+          {/* {!loading && isAuthenticated && (
+            <Link href="/dashboard" className="btn btn-sm btn-outline hidden lg:inline-flex border-base-300/70 hover:border-primary/60">Dashboard</Link>
+          )} */}
         </div>
 
         {/* MOBILE: Auth button stays visible on right if we want both icon + login (optional). */}
-        {!loading && !isAuthenticated && (
-          <div className="md:hidden ml-2">
-            <Link href="/login" className="btn btn-xs sm:btn-sm btn-primary">
-              Login
-            </Link>
-          </div>
-        )}
-        {!loading && isAuthenticated && session.user && (
-          <div className="md:hidden ml-2">
-            <AvatarDropdown mobile user={session.user} onSignOut={handleSignOut} signingOut={signingOut} />
+        {!loading && (
+          <div className="md:hidden ml-auto flex items-center gap-2">
+            <ThemeToggleButton />
+            {isAuthenticated && session.user ? (
+              <AvatarDropdown mobile user={session.user} onSignOut={handleSignOut} signingOut={signingOut} />
+            ) : (
+              <Link href="/login" className="btn btn-xs sm:btn-sm btn-primary">Login</Link>
+            )}
           </div>
         )}
       </div>
@@ -197,13 +188,13 @@ const Navbar = () => {
             </li>
           ))}
           {/* (OPTIONAL) Move auth action inside menu instead of top-right: comment out above small-screen auth if using this. */}
-          {isAuthenticated ? (
+          {/* {isAuthenticated ? (
             <li className="pt-2 border-t border-base-300 mt-1">
               <Link href="/dashboard" className="btn btn-sm w-full btn-outline">
                 Dashboard
               </Link>
             </li>
-          ) : null}
+          ) : null} */}
         </ul>
       </div>
     </header>
