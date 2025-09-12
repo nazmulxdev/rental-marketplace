@@ -1,36 +1,254 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏠 Rental Marketplace — RentEase Platform  
 
-## Getting Started
+An **AI-powered full-stack rental marketplace** that connects rent seekers with property owners and managers. Users can browse listings, search with smart AI filters, chat in real-time, schedule bookings, and securely pay rent online. Landlords can list and manage properties, while admins handle approvals, reports, and analytics.  
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📌 Project Overview  
+The **RentEase Platform** is designed to simplify the rental ecosystem by combining property management, real-time chat, online payments, and AI-powered smart search. Whether you’re a student looking for a room, a family searching for an apartment, or a landlord managing multiple properties — this platform has you covered.  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Features  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **User Authentication & Profiles**  
+  - Secure login/signup (email/social)  
+  - Role-based dashboards (Rent Seekers, Landlords, Admins)  
+  - Editable profiles with preferences, saved listings  
 
-## Learn More
+- **Property Listings & Management**  
+  - Landlords can list, update, and manage rentals with images, pricing, and amenities  
+  - Seekers can browse detailed listings with availability status  
 
-To learn more about Next.js, take a look at the following resources:
+- **Advanced Search & Filters**  
+  - Search by city, district, or map  
+  - Filters for price, property type, size, amenities  
+  - AI-powered smart search/autocomplete  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Real-Time Chat & Communication**  
+  - Instant messaging with landlords  
+  - Typing indicators, read receipts, image sharing  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Booking & Scheduling**  
+  - Request and schedule property visits  
+  - Landlords can approve/decline bookings  
 
-## Deploy on Vercel
+- **Payments & Rent Management**  
+  - Secure rent payment (Stripe, bKash, Nagad, Bank)  
+  - Rent history, invoices, refunds, payouts  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **AI & Smart Features**  
+  - Smart recommendations based on past searches  
+  - Natural language queries (“2BHK under 15k in Banani”)  
+  - Fraud/fake listing detection (image validation via AI)  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Reviews & Ratings**  
+  - Tenants leave feedback on landlords & properties  
+  - Optional landlord feedback on tenants  
+
+- **Admin Dashboard**  
+  - Manage users, properties, reports  
+  - Analytics on rentals, payments, usage  
+
+- **Notifications & Alerts**  
+  - In-app + Email/SMS notifications for bookings, messages, payments  
+
+---
+
+## 💻 Tech Stack  
+
+**Frontend**  
+- Next.js 15 + TypeScript  
+- React 19 / React DOM  
+- Tailwind CSS + DaisyUI  
+- Framer Motion, Lucide Icons  
+- Axios  
+- Google Maps API / Leaflet  
+
+**Backend**  
+- Node.js + Express  
+- MongoDB  
+- NextAuth.js / JWT + bcrypt for authentication  
+- Cloudinary (media storage)  
+- Stripe API (payments)  
+
+**AI / Smart Features**  
+- OpenAI GPT API (smart search, chat)  
+- Google Vision API (fake image detection)  
+- ML models for price suggestion & recommendations  
+
+**Other Tools**  
+- Socket.io (real-time chat)  
+- SweetAlert2 (alerts)  
+
+---
+
+## 🌍 Live Link  
+
+🔗 [RentEase Platform Live](https://your-deployed-link.vercel.app)  
+
+---
+
+## 👥 Team Members  
+
+| Name                  | Role                                 | GitHub Profile                       |
+|-----------------------|--------------------------------------|--------------------------------------|
+| Md Nazmul Hossen      | Full Stack Developer (MERN, Next.js) | [nazmulxdev](https://github.com/nazmulxdev) |
+| Mohammad Raihan Gazi  | Full Stack Developer (MERN, Next.js) | [gaziraihan1](https://github.com/gaziraihan1) |
+| A H M Saif Smran      | Full Stack Developer (MERN, Next.js) | [Saif-Smran](https://github.com/Saif-Smran) |
+| Sauda Tus Sahadia     | Full Stack Developer (MERN, Next.js) | [SaudaTusSahadia](https://github.com/SaudaTusSahadia) |
+
+---
+
+## ⚙️ Environment Variables  
+
+Create a `.env.local` file in the root directory with the following:  
+
+```env
+# Database
+MONGODB_URI=your_mongodb_connection_string
+
+# Auth
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+
+# Stripe
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# AI / APIs
+OPENAI_API_KEY=your_openai_api_key
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+GOOGLE_VISION_API_KEY=your_google_vision_api_key
+# 🏠 Rental Marketplace — RentEase Platform  
+
+An **AI-powered full-stack rental marketplace** that connects rent seekers with property owners and managers. Users can browse listings, search with smart AI filters, chat in real-time, schedule bookings, and securely pay rent online. Landlords can list and manage properties, while admins handle approvals, reports, and analytics.  
+
+---
+
+## 📌 Project Overview  
+The **RentEase Platform** is designed to simplify the rental ecosystem by combining property management, real-time chat, online payments, and AI-powered smart search. Whether you’re a student looking for a room, a family searching for an apartment, or a landlord managing multiple properties — this platform has you covered.  
+
+---
+
+## 🚀 Features  
+
+- **User Authentication & Profiles**  
+  - Secure login/signup (email/social)  
+  - Role-based dashboards (Rent Seekers, Landlords, Admins)  
+  - Editable profiles with preferences, saved listings  
+
+- **Property Listings & Management**  
+  - Landlords can list, update, and manage rentals with images, pricing, and amenities  
+  - Seekers can browse detailed listings with availability status  
+
+- **Advanced Search & Filters**  
+  - Search by city, district, or map  
+  - Filters for price, property type, size, amenities  
+  - AI-powered smart search/autocomplete  
+
+- **Real-Time Chat & Communication**  
+  - Instant messaging with landlords  
+  - Typing indicators, read receipts, image sharing  
+
+- **Booking & Scheduling**  
+  - Request and schedule property visits  
+  - Landlords can approve/decline bookings  
+
+- **Payments & Rent Management**  
+  - Secure rent payment (Stripe, bKash, Nagad, Bank)  
+  - Rent history, invoices, refunds, payouts  
+
+- **AI & Smart Features**  
+  - Smart recommendations based on past searches  
+  - Natural language queries (“2BHK under 15k in Banani”)  
+  - Fraud/fake listing detection (image validation via AI)  
+
+- **Reviews & Ratings**  
+  - Tenants leave feedback on landlords & properties  
+  - Optional landlord feedback on tenants  
+
+- **Admin Dashboard**  
+  - Manage users, properties, reports  
+  - Analytics on rentals, payments, usage  
+
+- **Notifications & Alerts**  
+  - In-app + Email/SMS notifications for bookings, messages, payments  
+
+---
+
+## 💻 Tech Stack  
+
+**Frontend**  
+- Next.js 15 + TypeScript  
+- React 19 / React DOM  
+- Tailwind CSS + DaisyUI  
+- Framer Motion, Lucide Icons  
+- Axios  
+- Google Maps API / Leaflet  
+
+**Backend**  
+- Node.js + Express  
+- MongoDB  
+- NextAuth.js / JWT + bcrypt for authentication  
+- Cloudinary (media storage)  
+- Stripe API (payments)  
+
+**AI / Smart Features**  
+- OpenAI GPT API (smart search, chat)  
+- Google Vision API (fake image detection)  
+- ML models for price suggestion & recommendations  
+
+**Other Tools**  
+- Socket.io (real-time chat)  
+- SweetAlert2 (alerts)  
+
+---
+
+## 🌍 Live Link  
+
+🔗 [RentEase Platform Live](https://your-deployed-link.vercel.app)  
+
+---
+
+## 👥 Team Members  
+
+| Name                  | Role                                 | GitHub Profile                       |
+|-----------------------|--------------------------------------|--------------------------------------|
+| Md Nazmul Hossen      | Full Stack Developer (MERN, Next.js) | [nazmulxdev](https://github.com/nazmulxdev) |
+| Mohammad Raihan Gazi  | Full Stack Developer (MERN, Next.js) | [gaziraihan1](https://github.com/gaziraihan1) |
+| A H M Saif Smran      | Full Stack Developer (MERN, Next.js) | [Saif-Smran](https://github.com/Saif-Smran) |
+| Sauda Tus Sahadia     | Full Stack Developer (MERN, Next.js) | [SaudaTusSahadia](https://github.com/SaudaTusSahadia) |
+
+---
+
+## ⚙️ Environment Variables  
+
+Create a `.env.local` file in the root directory with the following:  
+
+```env
+# Database
+MONGODB_URI=your_mongodb_connection_string
+
+# Auth
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+
+# Stripe
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# AI / APIs
+OPENAI_API_KEY=your_openai_api_key
+GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+GOOGLE_VISION_API_KEY=your_google_vision_api_key
