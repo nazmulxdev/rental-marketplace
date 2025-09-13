@@ -20,21 +20,25 @@ export async function getTheIntent(amount) {
   }
 }
 
-
-
 export async function saveThePaymentHistory(data) {
-    
-    console.log("Payment data form paymenjs page ",data);
-       const { paymentCollection } = await getCollection() ;
-       const res=await paymentCollection.insertOne(data);
-       return res;
+  console.log("Payment data form paymenjs page ", data);
+  const { paymentCollection } = await getCollection();
+  const res = await paymentCollection.insertOne(data);
+  //Convert the result to a plain object before returning
+  const plainResult = {
+    acknowledged: res.acknowledged,
+    insertedId: res.insertedId.toString(),
+  };
+
+  return plainResult;
 }
 
-export async function isBooked(email,id) {
+export async function isBooked(email, id) {
+  const { paymentCollection } = await getCollection();
+  const data = await paymentCollection.findOne({
+    payment_useremail: email,
+    propertiesId: id,
+  });
 
-       const { paymentCollection } = await getCollection() ;
-       const data=await paymentCollection.findOne({payment_useremail:email,propertiesId:id});
-
-    return (!!data);
-
+  return !!data;
 }

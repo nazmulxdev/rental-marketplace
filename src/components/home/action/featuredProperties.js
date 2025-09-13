@@ -15,3 +15,4 @@ export async function getTheFeaturedProduct() {
 
     return cleanedData;
 }
+
