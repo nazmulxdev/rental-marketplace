@@ -141,3 +141,35 @@ GOOGLE_MAPS_API_KEY=your_google_maps_api_key
 GOOGLE_VISION_API_KEY=your_google_vision_api_key
 
 ```
+
+---
+
+## 🛠️ Setup & Run Locally
+
+```
+# Clone the repo
+
+git clone https://github.com/your-repo-url/rental-marketplace.git
+cd rental-marketplace
+
+# Install dependencies
+
+npm install
+
+# Configure environment
+
+Create .env.local file
+Add values (see env example above)
+
+# Run development server
+
+npm run dev
+App will be running at: http://localhost:3000
+
+# Build for production
+
+npm run build
+npm start
+
+```
+--- 
