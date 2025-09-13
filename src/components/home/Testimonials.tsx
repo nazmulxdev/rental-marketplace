@@ -43,7 +43,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="relative py-20 bg-gray-50">
+    <section className="relative py-20">
       <div className="max-w-6xl mx-auto px-6">
         {/* Heading */}
         <motion.h2
@@ -51,7 +51,7 @@ export default function Testimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold text-center mb-12 text-gray-800"
+          className="text-4xl font-bold text-center mb-12"
         >
           What Our Users Say
         </motion.h2>
@@ -65,7 +65,7 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
-              className="relative group bg-white p-6 rounded-2xl shadow-lg border border-gray-100
+              className="relative group p-6 rounded-2xl shadow-lg border border-gray-100
                          hover:shadow-2xl hover:border-indigo-400 transition-all duration-300"
             >
               {/* Profile */}
@@ -76,13 +76,13 @@ export default function Testimonials() {
                   className="w-14 h-14 rounded-full object-cover border-2 border-indigo-500"
                 />
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800">{t.name}</h3>
-                  <p className="text-sm text-gray-500">{t.role}</p>
+                  <h3 className="text-lg font-semibold text-home-card-title">{t.name}</h3>
+                  <p className="text-sm text-primary">{t.role}</p>
                 </div>
               </div>
 
               {/* Review */}
-              <p className="text-gray-600 text-sm mb-4">{t.review}</p>
+              <p className="text-secondary text-sm mb-4">{t.review}</p>
 
               {/* Rating */}
               <div className="flex items-center gap-1">

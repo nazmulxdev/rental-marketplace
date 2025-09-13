@@ -13,6 +13,9 @@
   --color-primary: #004d40;
   --color-primary-content: #ffffff;
 
+  --color-home-card-title: #000007;
+  --color-secondary: #000000D9;
+
   /* warning color */
   --color-info: #4f46e5;
   --color-success: #16a34a;
@@ -25,6 +28,10 @@
   name: "dark";
   --color-primary: #26a69a;
   --color-primary-content: #ffffff;
+
+  --color-home-card-title: white;
+  --color-secondary: #FFFFFFD9;
+
 
   /* warning color */
   --color-info: #6366f1;

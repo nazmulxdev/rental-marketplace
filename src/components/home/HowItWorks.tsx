@@ -25,7 +25,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="relative py-20 bg-gray-50">
+    <section className="relative py-20">
       <div className="max-w-6xl mx-auto px-6">
         {/* Heading */}
         <motion.h2
@@ -33,7 +33,7 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold text-center mb-12 text-gray-800"
+          className="text-4xl font-bold text-center mb-12"
         >
           How It Works
         </motion.h2>
@@ -41,7 +41,7 @@ export default function HowItWorks() {
         {/* Steps */}
         <div className="relative flex flex-col md:flex-row items-center justify-between gap-12">
           {/* Connector Line */}
-          <div className="absolute hidden md:block top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-indigo-400 to-pink-400 -z-10" />
+          <div className="absolute hidden md:block top-1/2 left-0 right-0 h-1" />
 
           {steps.map((step, index) => (
             <motion.div
@@ -50,7 +50,8 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
-              className="flex flex-col items-center text-center bg-white p-6 rounded-2xl shadow-lg w-full md:w-1/3"
+              className="flex flex-col items-center text-center p-6 rounded-2xl shadow-lg w-full md:w-1/3 border-2 border-transparent
+                         bg-clip-padding hover:border-indigo-500 transition-all duration-300"
             >
               {/* Icon */}
               <div className="mb-4 bg-indigo-100 p-4 rounded-full">
@@ -58,12 +59,12 @@ export default function HowItWorks() {
               </div>
 
               {/* Title */}
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              <h3 className="text-xl font-semibold mb-2">
                 {step.title}
               </h3>
 
               {/* Description */}
-              <p className="text-gray-600 text-sm">{step.description}</p>
+              <p className="text-secondary text-sm">{step.description}</p>
             </motion.div>
           ))}
         </div>

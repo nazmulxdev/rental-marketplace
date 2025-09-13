@@ -29,7 +29,7 @@ const BeAMember = () => {
                 <div className="max-w-md w-full shadow-lg rounded-2xl p-8 text-center h-full">
             
             {/* Lock Icon */}
-            <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-red-100 text-red-600 mb-6">
+            <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full  text-red-600 mb-6">
               <svg xmlns="http://www.w3.org/2000/svg" 
                    fill="none" 
                    viewBox="0 0 24 24" 
@@ -48,7 +48,7 @@ const BeAMember = () => {
             </h2>
     
             {/* Subtitle */}
-            <p className="">
+            <p className="text-secondary">
               Only members can access and book rentals.  
               Become a member today to unlock exclusive benefits.
             </p>
@@ -59,7 +59,7 @@ const BeAMember = () => {
             {/* CTA Button */}
             <button
             onClick={handleMemberRegister}
-             className="w-full py-3 rounded-xl btn btn-secondary font-semibold shadow hover:shadow-md hover:opacity-90 transition my-2">
+             className="w-full py-3 rounded-xl btn btn-primary font-semibold shadow hover:shadow-md hover:opacity-90 transition my-2">
               Become a Member
             </button>
     

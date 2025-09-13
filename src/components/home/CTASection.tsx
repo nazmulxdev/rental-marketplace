@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function CTASection() {
   return (
-    <section className="relative w-full h-[60vh] flex items-center justify-center  overflow-hidden shadow-2xl  bg-black/60">
+    <section className="relative w-full h-[60vh] flex items-center justify-center  overflow-hidden shadow-2xl ">
       {/* Background Overlay Image */}
       <div className="absolute inset-0">
         <img

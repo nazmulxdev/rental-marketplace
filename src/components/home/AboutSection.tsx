@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function AboutSection() {
   return (
-    <section className="relative w-full py-20 bg-gradient-to-r from-gray-50 to-gray-100 overflow-hidden">
+    <section className="relative w-full py-20 overflow-hidden">
       <div className="max-w-6xl mx-auto px-6 md:px-0 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
         
         {/* Left: Image */}
@@ -30,16 +30,16 @@ export default function AboutSection() {
           viewport={{ once: true }}
           className="text-center md:text-left"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
             About <span className="text-purple-600">RentEase</span>
           </h2>
-          <p className="text-lg text-gray-600 leading-relaxed mb-6">
+          <p className="text-lg text-secondary leading-relaxed mb-6">
             RentEase is more than just a rental platform. We connect tenants
             with verified landlords, making the rental process safe, transparent,
             and stress-free. Our mission is to help you find your dream home
             with just a few clicks.
           </p>
-          <p className="text-lg text-gray-600 leading-relaxed">
+          <p className="text-lg text-secondary leading-relaxed">
             With AI-powered smart search, secure payments, and real-time chat,
             we’re redefining the future of property rentals.
           </p>
