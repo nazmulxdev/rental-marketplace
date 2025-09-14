@@ -79,9 +79,9 @@ export default function FeaturedProperties() {
   };
 
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl md:text-4xl font-bold text-gray-900 text-center mb-12">
+        <h2 className="text-4xl md:text-4xl font-bold text-center mb-12">
           <Typewriter
             options={{
               strings: [
@@ -108,16 +108,16 @@ export default function FeaturedProperties() {
               key={property._id}
               variants={item}
               whileHover={{ scale: 1.05 }}
-              className="relative rounded-2xl overflow-hidden shadow-lg group"
+              className="relative rounded-2xl bg-base-200 overflow-hidden shadow-lg group"
             >
               <img
                 src={property?.images[0]?.url}
                 alt={property.title}
                 className="w-full h-64 object-cover"
               />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-all"></div>
+              <div className="absolute inset-0  transition-all"></div>
 
-              <div className="absolute bottom-4 left-4 text-white">
+              <div className="absolute bottom-4 left-4">
                 <h3 className="text-xl font-semibold">{property.title}</h3>
                 <p className="text-sm">
                   {property.location.address.district},{" "}
@@ -132,7 +132,7 @@ export default function FeaturedProperties() {
                 </div>
               </div>
 
-              <button className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-all duration-300 bg-yellow-400 text-white py-2 text-center font-medium">
+              <button className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-all duration-300 bg-green-600 text-white py-2 text-center font-medium">
                 View Details
               </button>
             </motion.div>

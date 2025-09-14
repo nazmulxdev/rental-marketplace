@@ -12,6 +12,7 @@
 
   --color-primary: #004d40;
   --color-primary-content: #ffffff;
+  --color-card-text: #000000D9;
 
   /* warning color */
   --color-info: #4f46e5;
@@ -25,6 +26,7 @@
   name: "dark";
   --color-primary: #26a69a;
   --color-primary-content: #ffffff;
+  --color-card-text: #FFFFFFD9;
 
   /* warning color */
   --color-info: #6366f1;
