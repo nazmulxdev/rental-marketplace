@@ -7,7 +7,6 @@ import { authOptions } from "../auth/[...nextauth]/route";
 
 async function getUserId(): Promise<string | null> {
   const session = await getServerSession(authOptions as NextAuthOptions);
-  // @ts-expect-error user id added via callback augmentation
   return (session?.user?.id as string | undefined) || null;
 }
 

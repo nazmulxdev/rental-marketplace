@@ -10,11 +10,15 @@ import {
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { FaRegCreditCard, FaUser, FaEnvelope } from "react-icons/fa";
-import { getTheIntent, isBooked, saveThePaymentHistory } from "./action/payment";
+import {
+  getTheIntent,
+  isBooked,
+  saveThePaymentHistory,
+} from "./action/payment";
 import { Currency } from "lucide-react";
 
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 );
 
 // Card element custom style
@@ -49,7 +53,7 @@ function CheckoutForm({ listing }) {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [booked, setBooked] = useState(false);
-  const amount=listing.pricing?.monthly;
+  const amount = listing.pricing?.monthly;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,7 +70,6 @@ function CheckoutForm({ listing }) {
     try {
       // Call backend API to create PaymentIntent
       const res = await getTheIntent(amount);
-      console.log(res);
       const { clientSecret } = res;
 
       if (!clientSecret) throw new Error("No client secret returned.");
@@ -88,40 +91,40 @@ function CheckoutForm({ listing }) {
       }
 
       if (paymentIntent && paymentIntent.status === "succeeded") {
-  setSuccess("✅ Payment succeeded! Thank you.");
-  setBooked(true);
+        setSuccess("✅ Payment succeeded! Thank you.");
+        setBooked(true);
 
-  // save payment history
-  const data = {
-    payment_username: name,
-    type: 'rent',
-    payerUserId: userId,
-    payeeUserId: listing?.ownerAdminId,
-    payment_useremail: email,
-    propertiesId: listing._id,
-    amount: paymentIntent.amount,
-    currency: paymentIntent.currency,
-    transactionId: paymentIntent.id,
-    payment_method: paymentIntent.payment_method,
-    paymentAt: new Date(),
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
-  await saveThePaymentHistory(data);
+        // save payment history
+        const data = {
+          payment_username: name,
+          type: "rent",
+          payerUserId: userId,
+          payeeUserId: listing?.ownerAdminId,
+          payment_useremail: email,
+          propertiesId: listing._id,
+          amount: paymentIntent.amount,
+          currency: paymentIntent.currency,
+          transactionId: paymentIntent.id,
+          payment_method: paymentIntent.payment_method,
+          paymentAt: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        await saveThePaymentHistory(data);
 
-  // ✅ create booking entry
-  await fetch("/api/bookings", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      userId: session?.data?.user?.id,          // seeker
-      adminUserId: listing.ownerAdminId,         // landlord
-      propertyId: listing._id,
-      slot: { start: new Date(), end: null, timezone: "Asia/Dhaka" },
-      notes: "Initial booking after payment",
-    }),
-  });
-} else {
+        // ✅ create booking entry
+        await fetch("/api/bookings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: session?.data?.user?.id, // seeker
+            adminUserId: listing.ownerAdminId, // landlord
+            propertyId: listing._id,
+            slot: { start: new Date(), end: null, timezone: "Asia/Dhaka" },
+            notes: "Initial booking after payment",
+          }),
+        });
+      } else {
         setError("Payment not completed. Status: " + paymentIntent?.status);
       }
     } catch (err) {
@@ -148,7 +151,7 @@ function CheckoutForm({ listing }) {
         <div className="text-right">
           <div className="text-sm text-gray-500">Amount</div>
           <div className="text-xl font-bold text-indigo-700">
-            ৳ {(amount).toLocaleString()}
+            ৳ {amount.toLocaleString()}
           </div>
         </div>
       </div>
@@ -225,16 +228,14 @@ function CheckoutForm({ listing }) {
           disabled={!stripe || processing}
           className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-pink-500 text-white font-semibold py-3 rounded-xl shadow hover:shadow-2xl transform transition active:scale-[0.99]"
         >
-          {processing
-            ? "Processing..."
-            : `Pay ৳ ${(amount).toLocaleString()}`}
+          {processing ? "Processing..." : `Pay ৳ ${amount.toLocaleString()}`}
         </button>
       </form>
     </motion.div>
   );
 }
 
-export default function StripePaymentForm({listing}) {
+export default function StripePaymentForm({ listing }) {
   return (
     <Elements stripe={stripePromise}>
       <div className=" flex items-center justify-center p-6">
