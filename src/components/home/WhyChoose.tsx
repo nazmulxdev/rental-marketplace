@@ -31,7 +31,7 @@ const features = [
 
 export default function WhyChoose() {
   return (
-    <section className="relative py-20 bg-white">
+    <section className="relative py-20">
       <div className="max-w-6xl mx-auto px-6">
         {/* Heading */}
         <motion.h2
@@ -39,7 +39,7 @@ export default function WhyChoose() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold text-center mb-12 text-gray-800"
+          className="text-4xl font-bold text-center mb-12"
         >
           Why Choose <span className="text-indigo-600">RentEase</span>?
         </motion.h2>
@@ -53,22 +53,22 @@ export default function WhyChoose() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               viewport={{ once: true }}
-              className="relative group bg-white p-6 rounded-2xl shadow-lg border-2 border-transparent
+              className="relative group p-6 rounded-2xl shadow-lg bg-base-200 border-2 border-transparent
                          bg-clip-padding hover:border-indigo-500 transition-all duration-300"
             >
               {/* Glow border effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-500 -z-10" />
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-500 -z-10" />
 
               {/* Icon */}
               <div className="mb-4">{feature.icon}</div>
 
               {/* Title */}
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              <h3 className="text-lg font-semibold mb-2">
                 {feature.title}
               </h3>
 
               {/* Description */}
-              <p className="text-gray-600 text-sm">{feature.description}</p>
+              <p className="text-card-text text-sm">{feature.description}</p>
             </motion.div>
           ))}
         </div>

@@ -38,7 +38,7 @@ const ListingDetailsCard = ({ listing }) => {
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-2">{listing.title}</h1>
-      <p className="text-gray-600 mb-4">
+      <p className="mb-4">
         {listing.type} • {listing.location?.address?.city || "Unknown City"}
       </p>
 
@@ -67,7 +67,7 @@ const ListingDetailsCard = ({ listing }) => {
       </div>
 
       {/* Description */}
-      <p className="text-gray-800 leading-relaxed mb-6">
+      <p className="text-card-text leading-relaxed mb-6">
         {listing.description || "No description available."}
       </p>
 
@@ -83,7 +83,7 @@ const ListingDetailsCard = ({ listing }) => {
       </span>
 
       {/* Stats */}
-      <div className="mt-6 text-sm text-gray-500">
+      <div className="mt-6 text-sm">
         <p>💾 Saves: {listing.stats?.saves || 0}</p>
         <p>👀 Views: {listing.stats?.views || 0}</p>
         <p>📅 Posted on {new Date(listing.createdAt).toLocaleDateString()}</p>

@@ -34,9 +34,9 @@ export default function ListingCards() {
 
       <div className="grid md:grid-cols-3 gap-6">
   {loading ? (
-    <p className="text-center col-span-full text-gray-500">Loading listings...</p>
+    <p className="text-center col-span-full text-card-text">Loading listings...</p>
   ) : listings.length === 0 ? (
-    <p className="text-center col-span-full text-gray-500">No rentals found for now.</p>
+    <p className="text-center col-span-full text-card-text">No rentals found for now.</p>
   ) : (
     listings.map((item) => (
       <div
@@ -73,7 +73,7 @@ export default function ListingCards() {
     <p className="text-sm mb-2">
       {item.type} • {item.location?.address?.city || "Unknown City"}
     </p>
-    <p className="text-sm mb-4 line-clamp-3">
+    <p className="text-sm mb-4 line-clamp-3 text-card-text">
       {item.description || "No description available."}
     </p>
     <div className="mb-4">
